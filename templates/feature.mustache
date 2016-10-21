@@ -1,0 +1,17 @@
+{{> header}}
+<h1>
+	{{feature.name}}</h1>
+<ul class="tags feature-tags">
+	{{#feature.tags}}
+	<li>{{name}}</li>
+	{{/feature.tags}}
+</ul>
+
+<div id="description">
+	{{{feature.description}}}
+</div>
+
+<div id="feature-children">
+	{{#feature.children}}{{> scenario}}{{/feature.children}}
+</div>
+{{> footer}}

@@ -1,0 +1,285 @@
+<html>
+
+<head>
+	<title>[JIRAKEY-9123] Quick Search by ID</title>
+	<style>
+		table,
+		tr,
+		th,
+		td {
+			border: solid 1px;
+		}
+	</style>
+</head>
+
+<body><h1>
+	[JIRAKEY-9123] Quick Search by ID</h1>
+<ul class="tags feature-tags">
+	<li>@Backlog</li>
+	<li>@JIRAKEY-9123</li>
+	<li>@quicksearch</li>
+</ul>
+
+<div id="description">
+	<p>In order to be able to quickly display an entity
+As a user
+I should have access to a quicksearch by ID component
+where I should be able to type the ID of an entity
+and press the enter key or click the &quot;Search&quot; button.</p>
+<h2 id="requirements">Requirements</h2>
+<ul>
+<li>The textbox should be visible, with no value</li>
+<li>The search and reset buttons should not be visible</li>
+<li>When the user types a search term, the &quot;Search&quot; and &quot;Reset&quot; button should become visible</li>
+<li>When the user clicks the &quot;Reset&quot; button, the textbox should clear</li>
+<li>When the user clicks the &quot;Search&quot; button OR presses the ENTER key, a search is performed:<ul>
+<li>If an entity with the ID is found, the user should be redirected to the entity&#39;s page, and the searchbox should return to its initial state</li>
+<li>If an entity with the given ID is not found, the border of the textbox should become red, indicating an error.</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Tables</th>
+<th>Are</th>
+<th>Cool</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>col 3 is</td>
+<td>right-aligned</td>
+<td>$1600</td>
+</tr>
+<tr>
+<td>col 2 is</td>
+<td>centered</td>
+<td>$12</td>
+</tr>
+<tr>
+<td>zebra stripes</td>
+<td>are neat</td>
+<td>$1</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+
+<div id="feature-children">
+<div class="feature-child Background">
+	<h2 class="Background">Background: This is the Background</h2>
+	<ul class="tags children-tags">
+	</ul>
+
+	<!-- Steps -->
+	<ul class="steps">
+		<li>
+			Given  something
+			<!-- argument -->
+			<!-- /argument -->
+		</li>
+		<li>
+			And  something else
+			<!-- argument -->
+			<!-- /argument -->
+		</li>
+	</ul>
+	<!-- /Steps -->
+
+	<!-- Examples -->
+	<!-- /Examples -->
+</div><div class="feature-child Scenario">
+	<h2 class="Scenario">Scenario: Check Default State</h2>
+	<ul class="tags children-tags">
+		<li>@MainFlow</li>
+	</ul>
+
+	<!-- Steps -->
+	<ul class="steps">
+		<li>
+			Given  I access the application
+			<!-- argument -->
+			<!-- /argument -->
+		</li>
+		<li>
+			Then  The Quick Search textbox should be visible
+			<!-- argument -->
+			<!-- /argument -->
+		</li>
+		<li>
+			And  The Quick Search textbox should have the value &#39;&#39;
+			<!-- argument -->
+			<!-- /argument -->
+		</li>
+		<li>
+			And  The Quick Search button should not be visible
+			<!-- argument -->
+			<!-- /argument -->
+		</li>
+		<li>
+			And  The Quick Search reset button should not be visible
+			<!-- argument -->
+			<!-- /argument -->
+		</li>
+	</ul>
+	<!-- /Steps -->
+
+	<!-- Examples -->
+	<!-- /Examples -->
+</div><div class="feature-child Scenario">
+	<h2 class="Scenario">Scenario: Check Buttons&#39; visibility when a search term is typed</h2>
+	<ul class="tags children-tags">
+	</ul>
+
+	<!-- Steps -->
+	<ul class="steps">
+		<li>
+			Given  I access the application
+			<!-- argument -->
+			<table class="argument datatable">
+				<!-- rows -->
+				<tr>
+					<td>something</td>
+					<td>action</td>
+					<td>should</td>
+					<td>but</td>
+				</tr>
+				<tr>
+					<td>ssssssss1</td>
+					<td>aaaaa1</td>
+					<td>shoul1</td>
+					<td>bu1</td>
+				</tr>
+				<tr>
+					<td>ssssssss2</td>
+					<td>aaaaa2</td>
+					<td>shoul2</td>
+					<td>bu2</td>
+				</tr>
+				<tr>
+					<td>ssssssss3</td>
+					<td>aaaaa3</td>
+					<td>shoul3</td>
+					<td>bu3</td>
+				</tr>
+				<!-- /rows -->
+			</table>
+			<!-- /argument -->
+		</li>
+		<li>
+			When  I type &#39;test&#39; in the Quick Search textbox
+			<!-- argument -->
+			<!-- /argument -->
+		</li>
+		<li>
+			Then  The Quick Search button should be visible
+			<!-- argument -->
+			<!-- /argument -->
+		</li>
+		<li>
+			And  The Quick Search reset button should be visible
+			<!-- argument -->
+			<!-- /argument -->
+		</li>
+	</ul>
+	<!-- /Steps -->
+
+	<!-- Examples -->
+	<!-- /Examples -->
+</div><div class="feature-child Scenario">
+	<h2 class="Scenario">Scenario: Reset search</h2>
+	<ul class="tags children-tags">
+		<li>@AlternativeFlow(1)</li>
+	</ul>
+
+	<!-- Steps -->
+	<ul class="steps">
+	</ul>
+	<!-- /Steps -->
+
+	<!-- Examples -->
+	<!-- /Examples -->
+</div><div class="feature-child Scenario">
+	<h2 class="Scenario">Scenario: ID not found</h2>
+	<ul class="tags children-tags">
+		<li>@AlternativeFlow(2)</li>
+		<li>@Minor</li>
+	</ul>
+
+	<!-- Steps -->
+	<ul class="steps">
+	</ul>
+	<!-- /Steps -->
+
+	<!-- Examples -->
+	<!-- /Examples -->
+</div><div class="feature-child ScenarioOutline">
+	<h2 class="ScenarioOutline">Scenario Outline: Search for valid ID</h2>
+	<ul class="tags children-tags">
+		<li>@Security</li>
+	</ul>
+
+	<!-- Steps -->
+	<ul class="steps">
+		<li>
+			Given  some &lt;something&gt;
+			<!-- argument -->
+			<!-- /argument -->
+		</li>
+		<li>
+			When  I do &lt;action&gt;
+			<!-- argument -->
+			<!-- /argument -->
+		</li>
+		<li>
+			Then  I should &lt;should&gt;
+			<!-- argument -->
+			<!-- /argument -->
+		</li>
+		<li>
+			But  I &lt;but&gt;
+			<!-- argument -->
+			<!-- /argument -->
+		</li>
+	</ul>
+	<!-- /Steps -->
+
+	<!-- Examples -->
+	<h3>Examples:</h3>
+	<table>
+		<!-- Table header -->
+		<tr>
+			<th>something</th>
+			<th>action</th>
+			<th>should</th>
+			<th>but</th>
+		</tr>
+		<!-- /Table header -->
+		<!-- Table Body -->
+		<tr>
+			<td>ssssssss1</td>
+			<td>aaaaa1</td>
+			<td>shoul1</td>
+			<td>bu1</td>
+		</tr>
+		<tr>
+			<td>ssssssss2</td>
+			<td>aaaaa2</td>
+			<td>shoul2</td>
+			<td>bu2</td>
+		</tr>
+		<tr>
+			<td>ssssssss3</td>
+			<td>aaaaa3</td>
+			<td>shoul3</td>
+			<td>bu3</td>
+		</tr>
+		<!-- /Table Body -->
+	</table>
+	<!-- /Examples -->
+</div></div>
+</body>
+
+</html>

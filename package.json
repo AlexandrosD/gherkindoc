@@ -1,0 +1,17 @@
+{
+  "name": "gherkindoc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {},
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "del": "^2.2.2",
+    "gherkin": "^4.0.0",
+    "marked": "^0.3.6",
+    "mustache": "^2.2.1",
+    "ncp": "^2.0.0",
+    "recursive-readdir": "^2.1.0"
+  }
+}
