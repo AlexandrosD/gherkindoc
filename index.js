@@ -2,35 +2,29 @@ var Gherkin = require('gherkin');
 var Mustache = require('mustache');
 var marked = require('marked');
 var fs = require('fs');
+var fssync = require('fs-sync');
 var path = require('path');
-var ncp = require('ncp').ncp;
 var del = require('del');
 var mkdirp = require('mkdirp');
 
 var parser = new Gherkin.Parser();
 
-
-/**
- * TODO:
- * - read input/ output dirs from command line
- * - APIfy
- * - package as npm module
- */
-var featuresPath = './test/features/';
-var outputDir = './test/output';
+var featuresPath = null;
+var outputDir = null;
 
 var htmlTemplates = {};
 var scenaria = [];
 var tagScenaria = [];
-
-main();
 
 /* ******************************************************************** */
 
 /**
  * Entry point method
  */
-function main() {
+function generate(fp, od, cb) {
+    featuresPath = fp;
+    outputDir = od;
+
     // Load HTML templates
     loadHTMLTemplates();
 
@@ -38,26 +32,32 @@ function main() {
     del.sync(outputDir);
 
     // Copy source files to output dir
-    ncp(featuresPath, outputDir, function (err) {
-        var tree = traverseTree(outputDir);
-        // console.log(JSON.stringify(tree));
-        processTree(tree);
-        associateTags(function () {
-            mkdirp(outputDir + '/tags', function (err) {
-                if (err) {
-                    console.log('ERROR: Could not create directory to store tags!');
-                    console.log(err);
-                }
-                var tags = [];
-                for (var tag in tagScenaria) {
-                    tags.push({ name: tag, count: tagScenaria[tag].length });
-                    generateTagHtml(tag);
-                }
-                generateIndex(tree);
-                generateTocHtml(tree, tags);
-            });
+    fssync.copy(featuresPath, outputDir);
+
+    // traverse and process the directory structure
+    var tree = traverseTree(outputDir);
+    processTree(tree);
+    associateTags(function () {
+        mkdirp(outputDir + '/tags', function (err) {
+            if (err) {
+                console.log('ERROR: Could not create directory to store tags!');
+                console.log(err);
+            }
+            var tags = [];
+            for (var tag in tagScenaria) {
+                tags.push({ name: tag, count: tagScenaria[tag].length });
+                generateTagHtml(tag);
+            }
+            generateIndex(tree);
+            generateTocHtml(tree, tags);
+
+            // callback
+            if (cb) {
+                cb();
+            }
         });
     });
+
 }
 
 /**
@@ -161,7 +161,6 @@ function associateTags(cb) {
  * @return the Gherkin document
  */
 function parseFeature(featureFilename) {
-    console.log('Processing ' + featureFilename);
     var featureBody = fs.readFileSync(featureFilename, 'UTF-8');
     var gherkinDocument = parser.parse(featureBody);
 
@@ -241,3 +240,7 @@ function compareTagNames(aTag, bTag) {
         return 1;
     return 0;
 }
+
+module.exports = {
+    generate: generate
+};

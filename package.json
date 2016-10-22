@@ -1,18 +1,22 @@
 {
   "name": "gherkindoc",
   "version": "1.0.0",
-  "description": "",
+  "description": "Builds static HTML documentation sites from Cucumber/ Gherking feature files.",
   "main": "index.js",
-  "scripts": {},
-  "author": "",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha --reporter spec"
+  },
+  "author": "Alexandros Dallas <dallas.alexandros@gmai.com>",
   "license": "ISC",
   "devDependencies": {
+    "chai": "^3.5.0",
     "del": "^2.2.2",
+    "fs-sync": "^1.0.3",
     "gherkin": "^4.0.0",
     "marked": "^0.3.6",
     "mkdirp": "^0.5.1",
+    "mocha": "^3.1.2",
     "mustache": "^2.2.1",
-    "ncp": "^2.0.0",
     "recursive-readdir": "^2.1.0"
   }
 }
