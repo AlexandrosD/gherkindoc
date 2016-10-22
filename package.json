@@ -1,6 +1,6 @@
 {
   "name": "gherkindoc",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Builds static HTML documentation sites from Cucumber/ Gherking feature files.",
   "main": "index.js",
   "scripts": {
@@ -8,6 +8,10 @@
   },
   "author": "Alexandros Dallas <dallas.alexandros@gmai.com>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alexandrosd/gherkindoc.git"
+  },
   "devDependencies": {
     "chai": "^3.5.0",
     "del": "^2.2.2",
