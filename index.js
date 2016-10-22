@@ -43,6 +43,7 @@ function main() {
                 }
                 var tags = [];
                 for (var tag in tagScenaria) {
+                    tag = tag.replace('@', '');
                     tags.push(tag);
                     generateTagHtml(tag);
                 }
@@ -122,10 +123,11 @@ function associateTags(cb) {
             scenario.tags = scenario.featureTags;
         }
         scenario.tags.forEach(tag => {
-            if (!tagScenaria[tag.name]) {
-                tagScenaria[tag.name] = [];
+            tagName = tag.name.replace('@', '');
+            if (!tagScenaria[tagName]) {
+                tagScenaria[tagName] = [];
             }
-            tagScenaria[tag.name].push(scenario);
+            tagScenaria[tagName].push(scenario);
         });
     });
     cb();
@@ -161,6 +163,7 @@ function generateHtml(treeNode) {
 }
 
 function generateTocHtml(tree, tags) {
+    tree.tags = tags;
     var output = Mustache.render(htmlTemplates.toc, tree, htmlTemplates);
     fs.writeFileSync(outputDir + '/toc.html', output);
 }
@@ -174,7 +177,7 @@ function generateIndex(tree) {
 
 function generateTagHtml(tag) {
     var output = Mustache.render(htmlTemplates.tag, { tag: tag, scenaria: tagScenaria[tag] }, htmlTemplates);
-    fs.writeFileSync(outputDir + '/tags/' + tag.replace('@', '') + '.html', output);
+    fs.writeFileSync(outputDir + '/tags/' + tag + '.html', output);
 }
 
 /**

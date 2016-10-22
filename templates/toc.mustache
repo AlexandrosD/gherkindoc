@@ -5,7 +5,19 @@
 </head>
 
 <body>
-	{{>tocNode}}
+	<div id="toc">
+		<h2>Features</h2>
+		{{>tocNode}}
+
+		<div id="tags">
+			<h2>Tags</h2>
+			<ul class="tags">
+				{{#tags}}
+				<li><a href="tags/{{.}}.html" target="main">{{.}}</a></li>
+				{{/tags}}
+			</ul>
+
+		</div>
 </body>
 
 </html>
