@@ -33,7 +33,7 @@ function main() {
         console.log(JSON.stringify(tree));
 
         console.log("*****************************");
-        toc.children.push(createToc(outputDir));
+        toc.children.push(createToc(outputDir).children);
         console.log(JSON.stringify(toc));
 
         processTree(tree);
@@ -42,7 +42,7 @@ function main() {
 
 /**
  * Traverse a features directory and subdirectories and create a tree representing the features as GherkinDocuments
- * @param filename the directory to Traverse\
+ * @param filename the directory to Traverse
  * @return treeNode
  */
 function dirTree(filename) {
@@ -131,7 +131,7 @@ function parseFeature(featureFilename) {
  */
 function generateHtml(treeNode) {
     var sidebar = Mustache.render(htmlTemplates.sidebar, toc, htmlTemplates);
-    var output = Mustache.render(htmlTemplates.feature, { document: treeNode.document, sidebar: sidebar }, htmlTemplates);
+    var output = Mustache.render(htmlTemplates.feature, { basedir: outputDir, document: treeNode.document, sidebar: sidebar }, htmlTemplates);
     fs.writeFileSync(treeNode.path + '.html', output);
 }
 
