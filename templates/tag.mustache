@@ -1,7 +1,13 @@
 {{> header}}
-<h1>Tag: {{tag}}</h1>
+<div class="container">
+	<div class="row">
+		<div class="col-md-12">
+			<h1>Tag: {{tag}}</h1>
+		</div>
+	</div>
 
-<div id="feature-children">
-	{{#scenaria}}{{> scenario}}{{/scenaria}}
+	<div id="feature-children">
+		{{#scenaria}}{{> scenario}}{{/scenaria}}
+	</div>
 </div>
 {{> footer}}

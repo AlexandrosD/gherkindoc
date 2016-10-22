@@ -9,6 +9,13 @@ var mkdirp = require('mkdirp');
 
 var parser = new Gherkin.Parser();
 
+
+/**
+ * TODO:
+ * - read input/ output dirs from command line
+ * - APIfy
+ * - package as npm module
+ */
 var featuresPath = './test/features/';
 var outputDir = './test/output';
 
@@ -32,7 +39,7 @@ function main() {
 
     // Copy source files to output dir
     ncp(featuresPath, outputDir, function (err) {
-        var tree = dirTree(outputDir);
+        var tree = traverseTree(outputDir);
         // console.log(JSON.stringify(tree));
         processTree(tree);
         associateTags(function () {
@@ -43,8 +50,7 @@ function main() {
                 }
                 var tags = [];
                 for (var tag in tagScenaria) {
-                    tag = tag.replace('@', '');
-                    tags.push(tag);
+                    tags.push({ name: tag, count: tagScenaria[tag].length });
                     generateTagHtml(tag);
                 }
                 generateIndex(tree);
@@ -59,19 +65,19 @@ function main() {
  * @param filename the directory to Traverse
  * @return treeNode
  */
-function dirTree(filename) {
+function traverseTree(filename) {
     var stats = fs.lstatSync(filename);
     var treeNode = null;
 
     if (stats.isDirectory()) {
         var children = fs.readdirSync(filename).map(function (child) {
-            return dirTree(filename + '/' + child);
+            return traverseTree(filename + '/' + child);
         });
         var treeNode = {
             path: filename,
             tocName: filename.replace(outputDir + '/', ''),
             name: path.basename(filename),
-            link: '#',
+            link: null,
             type: 'directory',
             children: children,
             document: null
@@ -81,14 +87,30 @@ function dirTree(filename) {
         if (filename.endsWith('.feature')) {
             // parse feature file
             var gherkinDoc = parseFeature(filename);
+
+            // clean tagnames
+            gherkinDoc.feature.tags.forEach(tag => {
+                tag.name = tag.name.replace('@', '');
+            });
+            gherkinDoc.feature.children.forEach(child => {
+                if (child.tags) {
+                    child.tags.forEach(tag => {
+                        tag.name = tag.name.replace('@', '');
+                    });
+                }
+            });
+
             // collect scenaria for further processing
             gherkinDoc.feature.children.forEach(child => {
                 child.featureTags = gherkinDoc.feature.tags;
             })
             scenaria = scenaria.concat(gherkinDoc.feature.children);
+            // Determine the path to root folder
+            var rootFolder = path.relative(filename + '/..', outputDir);
             // construct tree node
             treeNode = {
                 path: filename,
+                rootFolder: rootFolder ? rootFolder + '/' : '',
                 name: path.basename(filename),
                 tocName: gherkinDoc.feature.name,
                 link: filename.replace(outputDir, './') + '.html',
@@ -123,7 +145,7 @@ function associateTags(cb) {
             scenario.tags = scenario.featureTags;
         }
         scenario.tags.forEach(tag => {
-            tagName = tag.name.replace('@', '');
+            tagName = tag.name;
             if (!tagScenaria[tagName]) {
                 tagScenaria[tagName] = [];
             }
@@ -158,11 +180,13 @@ function parseFeature(featureFilename) {
  * @param treeNode
  */
 function generateHtml(treeNode) {
-    var output = Mustache.render(htmlTemplates.feature, { document: treeNode.document }, htmlTemplates);
+    var output = Mustache.render(htmlTemplates.feature, { document: treeNode.document, rootFolder: treeNode.rootFolder }, htmlTemplates);
     fs.writeFileSync(treeNode.path + '.html', output);
 }
 
 function generateTocHtml(tree, tags) {
+    // Sort tags by name and assign them to the tree
+    tags.sort(compareTagNames);
     tree.tags = tags;
     var output = Mustache.render(htmlTemplates.toc, tree, htmlTemplates);
     fs.writeFileSync(outputDir + '/toc.html', output);
@@ -176,7 +200,7 @@ function generateIndex(tree) {
 }
 
 function generateTagHtml(tag) {
-    var output = Mustache.render(htmlTemplates.tag, { tag: tag, scenaria: tagScenaria[tag] }, htmlTemplates);
+    var output = Mustache.render(htmlTemplates.tag, { tag: tag, scenaria: tagScenaria[tag], rootFolder: '../' }, htmlTemplates);
     fs.writeFileSync(outputDir + '/tags/' + tag + '.html', output);
 }
 
@@ -210,11 +234,10 @@ function loadHTMLTemplates() {
     }
 }
 
-
-// TODO
-/**
- * Accept as parameter a file path
- * Read all the features and structure from there
- * Copy all non .feature files as they may be static resources
- * Produce html
- */
+function compareTagNames(aTag, bTag) {
+    if (aTag.name < bTag.name)
+        return -1;
+    if (aTag.name > bTag.name)
+        return 1;
+    return 0;
+}

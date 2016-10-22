@@ -10,7 +10,9 @@
 	<div class="row">
 		<div class="col-md-12">
 			{{#document.feature.tags}}
-			<a class="btn btn-default btn-xs">{{name}}</a>
+			<a class="btn btn-default btn-xs" href="{{rootFolder}}tags/{{name}}.html">
+				<span class="glyphicon glyphicon-tag" aria-hidden="true"></span>&nbsp;{{name}}
+			</a>
 			{{/document.feature.tags}}
 		</div>
 	</div>

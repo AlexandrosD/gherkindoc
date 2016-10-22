@@ -13,9 +13,11 @@
 
 		<div id="tags">
 			<h2>Tags</h2>
-			<ul class="tags">
+			<ul class="tags list-group">
 				{{#tags}}
-				<li><a href="tags/{{.}}.html" target="main">{{.}}</a></li>
+				<li class="list-group-item">
+				<span class="tag tag-default tag-pill float-xs-right">{{count}}</span>
+				<a href="tags/{{name}}.html" target="main">{{name}}</a></li>
 				{{/tags}}
 			</ul>
 

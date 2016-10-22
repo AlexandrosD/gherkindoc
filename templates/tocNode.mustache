@@ -1,5 +1,12 @@
 <ul class="toc">
 	{{#children}} {{#tocName}}
-	<li class="{{type}}"><a href="{{link}}" target="main">{{tocName}}{{>tocNode}}</a></li>
+	<li class="{{type}}">
+		{{#link}}
+		<a href="{{link}}" target="main">{{tocName}}{{>tocNode}}</a>
+		{{/link}}
+		{{^link}}
+		<span>{{tocName}}{{>tocNode}}</span>
+		{{/link}}
+	</li>
 	{{/tocName}}{{/children}}
 </ul>
