@@ -1,59 +1,83 @@
-<div class="feature-child {{type}}">
-	<h2 class="{{type}}">{{keyword}}: {{name}}</h2>
-	<ul class="tags children-tags">
-		{{#tags}}
-		<li>{{name}}</li>
-		{{/tags}}
-	</ul>
+<div class="container feature-child {{type}}">
+	<div class="row">
+		<div class="col-md-12">
+			<h2 class="{{type}}">{{keyword}}: {{name}}</h2>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-12">
+			{{#tags}}
+			<a class="btn btn-default btn-xs">{{name}}</a>
+			{{/tags}}
+		</div>
+	</div>
 
 	<!-- Steps -->
-	<ul class="steps">
+	<div class="container">
 		{{#steps}}
-		<li>
-			{{keyword}} {{text}}
+		<div class="row">
+			<div class="col-md-12"><span class="keyword">{{keyword}}</span> {{text}}</div>
 			<!-- argument -->
 			{{#argument}}
-			<table class="argument datatable">
-				<!-- rows -->
-				{{#rows}}
-				<tr>
-					{{#cells}}
-					<td>{{value}}</td>
-					{{/cells}}
-				</tr>
-				{{/rows}}
-				<!-- /rows -->
-			</table>
+			<div class="container">
+				<div class="row">
+					<div class="col-md-1">&nbsp;</div>
+					<div class="col-md-11">
+						<table class="argument datatable">
+							<!-- rows -->
+							{{#rows}}
+							<tr>
+								{{#cells}}
+								<td>{{value}}</td>
+								{{/cells}}
+							</tr>
+							{{/rows}}
+							<!-- /rows -->
+						</table>
+					</div>
+				</div>
+			</div>
 			{{/argument}}
 			<!-- /argument -->
-		</li>
+		</div>
 		{{/steps}}
-	</ul>
+	</div>
 	<!-- /Steps -->
 
 	<!-- Examples -->
 	{{#examples}}
-	<h3>Examples:</h3>
-	<table>
-		<!-- Table header -->
-		{{#tableHeader}}
-		<tr>
-			{{#cells}}
-			<th>{{value}}</th>
-			{{/cells}}
-		</tr>
-		{{/tableHeader}}
-		<!-- /Table header -->
-		<!-- Table Body -->
-		{{#tableBody}}
-		<tr>
-			{{#cells}}
-			<td>{{value}}</td>
-			{{/cells}}
-		</tr>
-		{{/tableBody}}
-		<!-- /Table Body -->
-	</table>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<h3>Examples:</h3>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<table>
+					<!-- Table header -->
+					{{#tableHeader}}
+					<tr>
+						{{#cells}}
+						<th>{{value}}</th>
+						{{/cells}}
+					</tr>
+					{{/tableHeader}}
+					<!-- /Table header -->
+					<!-- Table Body -->
+					{{#tableBody}}
+					<tr>
+						{{#cells}}
+						<td>{{value}}</td>
+						{{/cells}}
+					</tr>
+					{{/tableBody}}
+					<!-- /Table Body -->
+				</table>
+			</div>
+		</div>
+	</div>
 	{{/examples}}
 	<!-- /Examples -->
 </div>

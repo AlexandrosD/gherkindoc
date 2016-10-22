@@ -1,17 +1,29 @@
 {{> header}}
-<h1>
-	{{document.feature.name}}</h1>
-<ul class="tags feature-tags">
-	{{#document.feature.tags}}
-	<li>{{name}}</li>
-	{{/document.feature.tags}}
-</ul>
 
-<div id="description">
-	{{{document.feature.description}}}
-</div>
+<div class="feature container">
+	<div class="row">
+		<div class="col-md-12">
+			<h1>{{document.feature.name}}</h1>
+		</div>
+	</div>
 
-<div id="feature-children">
-	{{#document.feature.children}}{{> scenario}}{{/document.feature.children}}
+	<div class="row">
+		<div class="col-md-12">
+			{{#document.feature.tags}}
+			<a class="btn btn-default btn-xs">{{name}}</a>
+			{{/document.feature.tags}}
+		</div>
+	</div>
+
+	<div class="description row">
+		<div class="col-md-12">
+			{{{document.feature.description}}}
+		</div>
+	</div>
+
+	<div id="feature-children" class="container">
+		{{#document.feature.children}}{{> scenario}}{{/document.feature.children}}
+	</div>
+	
 </div>
 {{> footer}}

@@ -205,7 +205,8 @@ function loadHTMLTemplates() {
         header: fs.readFileSync('./templates/header.mustache', 'UTF-8'),
         footer: fs.readFileSync('./templates/footer.mustache', 'UTF-8'),
         toc: fs.readFileSync('./templates/toc.mustache', 'UTF-8'),
-        tocNode: fs.readFileSync('./templates/tocNode.mustache', 'UTF-8')
+        tocNode: fs.readFileSync('./templates/tocNode.mustache', 'UTF-8'),
+        css: fs.readFileSync('./templates/css.mustache', 'UTF-8')
     }
 }
 
