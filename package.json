@@ -10,6 +10,7 @@
     "del": "^2.2.2",
     "gherkin": "^4.0.0",
     "marked": "^0.3.6",
+    "mkdirp": "^0.5.1",
     "mustache": "^2.2.1",
     "ncp": "^2.0.0",
     "recursive-readdir": "^2.1.0"

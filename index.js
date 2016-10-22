@@ -5,13 +5,16 @@ var fs = require('fs');
 var path = require('path');
 var ncp = require('ncp').ncp;
 var del = require('del');
+var mkdirp = require('mkdirp');
+
 var parser = new Gherkin.Parser();
 
 var featuresPath = './test/features/';
 var outputDir = './test/output';
 
 var htmlTemplates = {};
-var toc = { path: './', name: 'root', type: 'root', children: [] };
+var scenaria = [];
+var tagScenaria = [];
 
 main();
 
@@ -30,13 +33,23 @@ function main() {
     // Copy source files to output dir
     ncp(featuresPath, outputDir, function (err) {
         var tree = dirTree(outputDir);
-        console.log(JSON.stringify(tree));
-
-        console.log("*****************************");
-        toc.children.push(createToc(outputDir).children);
-        console.log(JSON.stringify(toc));
-
+        // console.log(JSON.stringify(tree));
         processTree(tree);
+        associateTags(function () {
+            mkdirp(outputDir + '/tags', function (err) {
+                if (err) {
+                    console.log('ERROR: Could not create directory to store tags!');
+                    console.log(err);
+                }
+                var tags = [];
+                for (var tag in tagScenaria) {
+                    tags.push(tag);
+                    generateTagHtml(tag);
+                }
+                generateIndex(tree);
+                generateTocHtml(tree, tags);
+            });
+        });
     });
 }
 
@@ -46,63 +59,76 @@ function main() {
  * @return treeNode
  */
 function dirTree(filename) {
-    var stats = fs.lstatSync(filename),
-        treeNode = {
-            path: filename,
-            name: path.basename(filename)
-        };
+    var stats = fs.lstatSync(filename);
+    var treeNode = null;
 
     if (stats.isDirectory()) {
-        treeNode.type = 'directory';
-        treeNode.children = fs.readdirSync(filename).map(function (child) {
+        var children = fs.readdirSync(filename).map(function (child) {
             return dirTree(filename + '/' + child);
         });
+        var treeNode = {
+            path: filename,
+            tocName: filename.replace(outputDir + '/', ''),
+            name: path.basename(filename),
+            link: '#',
+            type: 'directory',
+            children: children,
+            document: null
+        };
     }
     else {
         if (filename.endsWith('.feature')) {
-            treeNode.type = 'featurefile';
-            treeNode.document = parseFeature(filename);
+            // parse feature file
+            var gherkinDoc = parseFeature(filename);
+            // collect scenaria for further processing
+            gherkinDoc.feature.children.forEach(child => {
+                child.featureTags = gherkinDoc.feature.tags;
+            })
+            scenaria = scenaria.concat(gherkinDoc.feature.children);
+            // construct tree node
+            treeNode = {
+                path: filename,
+                name: path.basename(filename),
+                tocName: gherkinDoc.feature.name,
+                link: filename.replace(outputDir, './') + '.html',
+                children: null,
+                type: 'featurefile',
+                document: gherkinDoc
+            };
         }
         else {
-            treeNode.type = 'file';
+            treeNode = {
+                path: filename,
+                name: path.basename(filename),
+                tocName: null,
+                link: null,
+                children: null,
+                type: 'file',
+                document: null
+            };
         }
     }
 
     return treeNode;
 }
 
-/**
- * Create table of contents
- */
-function createToc(filename) {
-    var stats = fs.lstatSync(filename);
-    var treeNode = null;
-    if (stats.isDirectory()) {
-        var treeNode = {
-            path: filename,
-            name: path.basename(filename)
-        };
-        treeNode.type = 'directory';
-        var children = fs.readdirSync(filename).map(function (child) {
-            return createToc(filename + '/' + child);
-        });
-        if (children) {
-            treeNode.children = children;
+function associateTags(cb) {
+    scenaria.forEach(scenario => {
+        // inherit feature tags
+        if (scenario.tags) {
+            scenario.tags = scenario.tags.concat(scenario.featureTags);
         }
         else {
-            treeNode.children = null;
+            scenario.tags = scenario.featureTags;
         }
-    }
-    else if (filename.endsWith('.feature')) {
-        treeNode = {
-            path: filename,
-            name: path.basename(filename),
-            children: null
-        };
-        treeNode.type = 'featurefile';
-    }
-
-    return treeNode;
+        scenario.tags.forEach(tag => {
+            if (!tagScenaria[tag.name]) {
+                tagScenaria[tag.name] = [];
+            }
+            tagScenaria[tag.name].push(scenario);
+        });
+    });
+    cb();
 }
 
 /**
@@ -130,9 +156,25 @@ function parseFeature(featureFilename) {
  * @param treeNode
  */
 function generateHtml(treeNode) {
-    var sidebar = Mustache.render(htmlTemplates.sidebar, toc, htmlTemplates);
-    var output = Mustache.render(htmlTemplates.feature, { basedir: outputDir, document: treeNode.document, sidebar: sidebar }, htmlTemplates);
+    var output = Mustache.render(htmlTemplates.feature, { document: treeNode.document }, htmlTemplates);
     fs.writeFileSync(treeNode.path + '.html', output);
+}
+
+function generateTocHtml(tree, tags) {
+    var output = Mustache.render(htmlTemplates.toc, tree, htmlTemplates);
+    fs.writeFileSync(outputDir + '/toc.html', output);
+}
+
+function generateIndex(tree) {
+    var output = Mustache.render(htmlTemplates.index, tree, htmlTemplates);
+    fs.writeFileSync(outputDir + '/index.html', output);
+    output = Mustache.render(htmlTemplates.main, tree, htmlTemplates);
+    fs.writeFileSync(outputDir + '/main.html', output);
+}
+
+function generateTagHtml(tag) {
+    var output = Mustache.render(htmlTemplates.tag, { tag: tag, scenaria: tagScenaria[tag] }, htmlTemplates);
+    fs.writeFileSync(outputDir + '/tags/' + tag.replace('@', '') + '.html', output);
 }
 
 /**
@@ -152,14 +194,18 @@ function processTree(treeNode) {
 
 function loadHTMLTemplates() {
     htmlTemplates = {
+        index: fs.readFileSync('./templates/index.mustache', 'UTF-8'),
+        main: fs.readFileSync('./templates/main.mustache', 'UTF-8'),
         feature: fs.readFileSync('./templates/feature.mustache', 'UTF-8'),
+        tag: fs.readFileSync('./templates/tag.mustache', 'UTF-8'),
         scenario: fs.readFileSync('./templates/scenario.mustache', 'UTF-8'),
         header: fs.readFileSync('./templates/header.mustache', 'UTF-8'),
         footer: fs.readFileSync('./templates/footer.mustache', 'UTF-8'),
-        sidebar: fs.readFileSync('./templates/sidebar.mustache', 'UTF-8'),
+        toc: fs.readFileSync('./templates/toc.mustache', 'UTF-8'),
         tocNode: fs.readFileSync('./templates/tocNode.mustache', 'UTF-8')
     }
 }
+
 
 // TODO
 /**

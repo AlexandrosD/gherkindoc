@@ -1,5 +1,5 @@
 <ul>
-	{{#children}}
-	<li>{{path}}{{>tocNode}}</li>
-	{{/children}}
+	{{#children}} {{#tocName}}
+	<li class="{{type}}"><a href="{{link}}" target="main">{{tocName}}{{>tocNode}}</a></li>
+	{{/tocName}}{{/children}}
 </ul>
