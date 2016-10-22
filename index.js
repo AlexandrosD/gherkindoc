@@ -11,6 +11,7 @@ var featuresPath = './test/features/';
 var outputDir = './test/output';
 
 var htmlTemplates = {};
+var toc = { path: './', name: 'root', type: 'root', children: [] };
 
 main();
 
@@ -28,10 +29,13 @@ function main() {
 
     // Copy source files to output dir
     ncp(featuresPath, outputDir, function (err) {
-        // ast.directories = processFeaturesDirectory(outputDir);
-        // console.log(JSON.stringify(ast));
         var tree = dirTree(outputDir);
         console.log(JSON.stringify(tree));
+
+        console.log("*****************************");
+        toc.children.push(createToc(outputDir));
+        console.log(JSON.stringify(toc));
+
         processTree(tree);
     });
 }
@@ -68,6 +72,40 @@ function dirTree(filename) {
 }
 
 /**
+ * Create table of contents
+ */
+function createToc(filename) {
+    var stats = fs.lstatSync(filename);
+    var treeNode = null;
+    if (stats.isDirectory()) {
+        var treeNode = {
+            path: filename,
+            name: path.basename(filename)
+        };
+        treeNode.type = 'directory';
+        var children = fs.readdirSync(filename).map(function (child) {
+            return createToc(filename + '/' + child);
+        });
+        if (children) {
+            treeNode.children = children;
+        }
+        else {
+            treeNode.children = null;
+        }
+    }
+    else if (filename.endsWith('.feature')) {
+        treeNode = {
+            path: filename,
+            name: path.basename(filename),
+            children: null
+        };
+        treeNode.type = 'featurefile';
+    }
+
+    return treeNode;
+}
+
+/**
  * Parse a feature file whith Gherkin parser and transform it to Gherkin ast
  * @param featureFilename the filename fo the feature
  * @return the Gherkin document
@@ -92,7 +130,8 @@ function parseFeature(featureFilename) {
  * @param treeNode
  */
 function generateHtml(treeNode) {
-    var output = Mustache.render(htmlTemplates.feature, treeNode.document, htmlTemplates);
+    var sidebar = Mustache.render(htmlTemplates.sidebar, toc, htmlTemplates);
+    var output = Mustache.render(htmlTemplates.feature, { document: treeNode.document, sidebar: sidebar }, htmlTemplates);
     fs.writeFileSync(treeNode.path + '.html', output);
 }
 
@@ -116,7 +155,9 @@ function loadHTMLTemplates() {
         feature: fs.readFileSync('./templates/feature.mustache', 'UTF-8'),
         scenario: fs.readFileSync('./templates/scenario.mustache', 'UTF-8'),
         header: fs.readFileSync('./templates/header.mustache', 'UTF-8'),
-        footer: fs.readFileSync('./templates/footer.mustache', 'UTF-8')
+        footer: fs.readFileSync('./templates/footer.mustache', 'UTF-8'),
+        sidebar: fs.readFileSync('./templates/sidebar.mustache', 'UTF-8'),
+        tocNode: fs.readFileSync('./templates/tocNode.mustache', 'UTF-8')
     }
 }
 
