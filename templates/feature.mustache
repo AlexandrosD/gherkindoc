@@ -7,8 +7,8 @@
 		</div>
 	</div>
 
-	<div class="row">
-		<div class="col-md-12">
+	<div class="card">
+		<div class="card-block">
 			{{#document.feature.tags}}
 			<a class="btn btn-default btn-xs" href="{{rootFolder}}tags/{{name}}.html">
 				<span class="glyphicon glyphicon-tag" aria-hidden="true"></span>&nbsp;{{name}}
@@ -17,15 +17,18 @@
 		</div>
 	</div>
 
-	<div class="description row">
-		<div class="col-md-12">
+	<div class="card">
+		<div class="card-block">
+			<h2 class="card-title">User Story</h2>
+		</div>
+		<div class="card-block">
 			{{{document.feature.description}}}
 		</div>
 	</div>
 
-	<div id="feature-children" class="container">
+	<div id="feature-children">
 		{{#document.feature.children}}{{> scenario}}{{/document.feature.children}}
 	</div>
-	
+
 </div>
 {{> footer}}

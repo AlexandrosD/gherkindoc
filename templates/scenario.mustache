@@ -1,84 +1,71 @@
-<div class="container feature-child {{type}}">
-	<div class="row">
-		<div class="col-md-12">
-			<h2 class="{{type}}">{{keyword}}: {{name}}</h2>
-		</div>
+<div class="card">
+	<div class="card-block">
+		<h3 class="card-title {{type}}">{{keyword}}: {{name}}</h3>
 	</div>
-
-	<div class="row">
-		<div class="col-md-12">
-			{{#tags}}
-			<a class="btn btn-default btn-xs" href="{{rootFolder}}tags/{{name}}.html">
-				<span class="glyphicon glyphicon-tag" aria-hidden="true"></span>&nbsp;{{name}}
-			</a>
-			{{/tags}}
-		</div>
+	<div class="card-block">
+		{{#tags}}
+		<a class="btn btn-default btn-xs" href="{{rootFolder}}tags/{{name}}.html">
+			<span class="glyphicon glyphicon-tag" aria-hidden="true"></span>&nbsp;{{name}}
+		</a>
+		{{/tags}}
 	</div>
-
-	<!-- Steps -->
-	<div class="container">
-		{{#steps}}
-		<div class="row">
-			<div class="col-md-12"><span class="keyword">{{keyword}}</span> {{text}}</div>
-			<!-- argument -->
-			{{#argument}}
-			<div class="container">
-				<div class="row">
-					<div class="col-md-1">&nbsp;</div>
-					<div class="col-md-11">
-						<table class="argument datatable">
-							<!-- rows -->
-							{{#rows}}
-							<tr>
-								{{#cells}}
-								<td>{{value}}</td>
-								{{/cells}}
-							</tr>
-							{{/rows}}
-							<!-- /rows -->
-						</table>
+	<div class="card-block">
+		<!-- Steps -->
+		<div class="container">
+			{{#steps}}
+			<div class="row">
+				<div class="col-md-12"><span class="keyword">{{keyword}}</span> {{text}}</div>
+				<!-- argument -->
+				{{#argument}}
+				<div class="container">
+					<div class="row">
+						<div class="col-md-1">&nbsp;</div>
+						<div class="col-md-11">
+							<table class="argument datatable">
+								<!-- rows -->
+								{{#rows}}
+								<tr>
+									{{#cells}}
+									<td>{{value}}</td>
+									{{/cells}}
+								</tr>
+								{{/rows}}
+								<!-- /rows -->
+							</table>
+						</div>
 					</div>
 				</div>
+				{{/argument}}
+				<!-- /argument -->
 			</div>
-			{{/argument}}
-			<!-- /argument -->
+			{{/steps}}
 		</div>
-		{{/steps}}
+		<!-- /Steps -->
 	</div>
-	<!-- /Steps -->
-
 	<!-- Examples -->
 	{{#examples}}
-	<div class="container">
-		<div class="row">
-			<div class="col-md-12">
-				<h3>Examples:</h3>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-12">
-				<table>
-					<!-- Table header -->
-					{{#tableHeader}}
-					<tr>
-						{{#cells}}
-						<th>{{value}}</th>
-						{{/cells}}
-					</tr>
-					{{/tableHeader}}
-					<!-- /Table header -->
-					<!-- Table Body -->
-					{{#tableBody}}
-					<tr>
-						{{#cells}}
-						<td>{{value}}</td>
-						{{/cells}}
-					</tr>
-					{{/tableBody}}
-					<!-- /Table Body -->
-				</table>
-			</div>
-		</div>
+	<div class="card-block">
+		<h4 class="card-title">Examples:</h4>
+		<table>
+			<!-- Table header -->
+			{{#tableHeader}}
+			<tr>
+				{{#cells}}
+				<th>{{value}}</th>
+				{{/cells}}
+			</tr>
+			{{/tableHeader}}
+			<!-- /Table header -->
+			<!-- Table Body -->
+			{{#tableBody}}
+			<tr>
+				{{#cells}}
+				<td>{{value}}</td>
+				{{/cells}}
+			</tr>
+			{{/tableBody}}
+			<!-- /Table Body -->
+		</table>
 	</div>
 	{{/examples}}
 	<!-- /Examples -->
