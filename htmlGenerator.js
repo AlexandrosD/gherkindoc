@@ -3,7 +3,8 @@ var marked = require('marked');
 var fs = require('fs');
 
 var defaultOptions = {
-    theme: 'cosmo'
+    theme: 'cosmo',
+    renderScenaria: true
 }
 
 var htmlGenerator = {
@@ -106,8 +107,9 @@ var htmlGenerator = {
         }
         else {
             htmlGenerator.options.theme = options.theme ? options.theme : defaultOptions.theme;
+            htmlGenerator.options.renderScenaria = options.renderScenaria != null ? options.renderScenaria : defaultOptions.renderScenaria;
         }
-        
+
     }
 }
 

@@ -26,9 +26,13 @@
 		</div>
 	</div>
 
+	{{#options.renderScenaria}}
 	<div id="feature-children">
 		{{#document.feature.children}}{{> scenario}}{{/document.feature.children}}
 	</div>
+	{{/options.renderScenaria}}
+	{{^options.renderScenaria}}
+	{{/options.renderScenaria}}
 
 </div>
 {{> footer}}

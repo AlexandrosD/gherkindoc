@@ -13,6 +13,6 @@ The following options are available (defaults are shown):
 ```javascript
 {
     theme: 'cosmo', // The [bootswatch](http://bootswatch.com/) theme to use
-    
+    renderScenaria: true // whether to render scenario bodies or only feature descriptions
 }
 ```
