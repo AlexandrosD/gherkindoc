@@ -113,7 +113,7 @@ function traverseTree(filename) {
                 rootFolder: rootFolder ? rootFolder + '/' : '',
                 name: path.basename(filename),
                 tocName: gherkinDoc.feature.name,
-                link: filename.replace(outputDir, __dirname) + '.html',
+                link: filename.replace(outputDir, './') + '.html',
                 children: null,
                 type: 'featurefile',
                 document: gherkinDoc
