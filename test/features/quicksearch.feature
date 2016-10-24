@@ -31,6 +31,9 @@ Feature: [JIRAKEY-9123] Quick Search by ID
 
     @MainFlow
     Scenario: Check Default State
+
+    This is a sample scenario description
+
         Given I access the application
         Then The Quick Search textbox should be visible
         And The Quick Search textbox should have the value ''

@@ -1,3 +1,4 @@
+#Comment
 @Backlog @JIRAKEY-9123 @quicksearch
 Feature: [JIRAKEY-9123] Quick Search by ID
 
@@ -25,12 +26,30 @@ Feature: [JIRAKEY-9123] Quick Search by ID
 	| col 2 is      | centered      |   $12 |
 	| zebra stripes | are neat      |    $1 |
     
+
+    # this is a test
     Background: This is the Background 
         Given something
         And something else
 
     @MainFlow
     Scenario: Check Default State
+
+    This is a sample scenario description
+    =====================================
+    Requirements
+    Lorem ipsum:
+    [Google](http://www.google.com)
+    test 143214
+    sadsadsad    
+    test list
+    --------
+    1. item 1 
+    2. item 2
+
+    # test comment1
+    # test comment 2
+
         Given I access the application
         Then The Quick Search textbox should be visible
         And The Quick Search textbox should have the value ''
