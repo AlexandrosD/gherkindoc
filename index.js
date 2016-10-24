@@ -113,7 +113,7 @@ function traverseTree(filename) {
                 rootFolder: rootFolder ? rootFolder + '/' : '',
                 name: path.basename(filename),
                 tocName: gherkinDoc.feature.name,
-                link: filename.replace(outputDir, './') + '.html',
+                link: filename.replace(outputDir, __dirname) + '.html',
                 children: null,
                 type: 'featurefile',
                 document: gherkinDoc
@@ -220,16 +220,16 @@ function processTree(treeNode) {
 
 function loadHTMLTemplates() {
     htmlTemplates = {
-        index: fs.readFileSync('./templates/index.mustache', 'UTF-8'),
-        main: fs.readFileSync('./templates/main.mustache', 'UTF-8'),
-        feature: fs.readFileSync('./templates/feature.mustache', 'UTF-8'),
-        tag: fs.readFileSync('./templates/tag.mustache', 'UTF-8'),
-        scenario: fs.readFileSync('./templates/scenario.mustache', 'UTF-8'),
-        header: fs.readFileSync('./templates/header.mustache', 'UTF-8'),
-        footer: fs.readFileSync('./templates/footer.mustache', 'UTF-8'),
-        toc: fs.readFileSync('./templates/toc.mustache', 'UTF-8'),
-        tocNode: fs.readFileSync('./templates/tocNode.mustache', 'UTF-8'),
-        css: fs.readFileSync('./templates/css.mustache', 'UTF-8')
+        index: fs.readFileSync(__dirname + '/templates/index.mustache', 'UTF-8'),
+        main: fs.readFileSync(__dirname + '/templates/main.mustache', 'UTF-8'),
+        feature: fs.readFileSync(__dirname + '/templates/feature.mustache', 'UTF-8'),
+        tag: fs.readFileSync(__dirname + '/templates/tag.mustache', 'UTF-8'),
+        scenario: fs.readFileSync(__dirname + '/templates/scenario.mustache', 'UTF-8'),
+        header: fs.readFileSync(__dirname + '/templates/header.mustache', 'UTF-8'),
+        footer: fs.readFileSync(__dirname + '/templates/footer.mustache', 'UTF-8'),
+        toc: fs.readFileSync(__dirname + '/templates/toc.mustache', 'UTF-8'),
+        tocNode: fs.readFileSync(__dirname + '/templates/tocNode.mustache', 'UTF-8'),
+        css: fs.readFileSync(__dirname + '/templates/css.mustache', 'UTF-8')
     }
 }
 
