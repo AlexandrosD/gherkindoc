@@ -10,7 +10,7 @@ var markdownParser = {
         markdown = markdown
             .trim()
             .replace(/\t/g, ' ')
-            .replace(/\n[ ]{4}/g, '\n'); // TODO replace spaces at the beggining of the line only
+            .replace(/^[ ]+/g, '\n'); // replace spaces at the beggining of the line
         return marked(markdown);
     }
 }
