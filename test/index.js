@@ -11,7 +11,8 @@ describe('GherkinDoc', function () {
         del.sync(outputDir);
     });
     it('generates documentation site', function () {
-        gherkindoc.generate(features, outputDir);
+        gherkindoc.generate(features, outputDir, { theme: 'simplex' });
+
         expect(fs.lstatSync(outputDir + 'index.html').isFile()).to.be.true;
 
         expect(fs.lstatSync(outputDir + 'nested').isDirectory()).to.be.true;

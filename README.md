@@ -6,7 +6,13 @@ A processor that transforms Cucumber (Gherkin) feature files into static HTML do
 Usage:
 ```javascript
 var gherkindoc = require('gherkindoc');
-gherkindoc.generate(featuresDirectory, outputDirectory, function () {
-    // done.
-});
+gherkindoc.generate(featuresDirectory, outputDirectory [, options]);
+```
+
+The following options are available (defaults are shown):
+```javascript
+{
+    theme: 'cosmo', // The [bootswatch](http://bootswatch.com/) theme to use
+    
+}
 ```
