@@ -1,6 +1,6 @@
 {
   "name": "gherkindoc",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Builds static HTML documentation sites from Cucumber/ Gherking feature files.",
   "main": "index.js",
   "scripts": {
