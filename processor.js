@@ -77,6 +77,7 @@ var processor = {
                 // collect scenaria for further processing
                 gherkinDoc.feature.children.forEach(child => {
                     child.featureTags = gherkinDoc.feature.tags;
+                    child.featureName = gherkinDoc.feature.name;
                 })
                 processor.scenaria = processor.scenaria.concat(gherkinDoc.feature.children);
                 // Determine the path to root folder
@@ -136,6 +137,7 @@ var processor = {
             else {
                 scenario.tags = scenario.featureTags;
             }
+            // process tags
             scenario.tags.forEach(tag => {
                 tagName = tag.name;
                 if (!processor.scenariaPerTag[tagName]) {

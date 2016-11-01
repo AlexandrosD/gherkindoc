@@ -94,7 +94,7 @@ var htmlGenerator = {
      * @param tag the name of the tag to generate a page for
      */
     generateTagHtml: function (tree, tag, outputDir) {
-        var output = Mustache.render(htmlGenerator.htmlTemplates.tag, { tag: tag, scenaria: tree.scenariaPerTag[tag], rootFolder: '../', options: htmlGenerator.options }, htmlGenerator.htmlTemplates);
+        var output = Mustache.render(htmlGenerator.htmlTemplates.tag, { tag: tag, showFeatureName: true, scenaria: tree.scenariaPerTag[tag], rootFolder: '../', options: htmlGenerator.options }, htmlGenerator.htmlTemplates);
         fs.writeFileSync(outputDir + '/tags/' + tag + '.html', output);
     },
 
