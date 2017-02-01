@@ -85,7 +85,7 @@ var processor = {
                     })
                     processor.scenaria = processor.scenaria.concat(gherkinDoc.feature.children);
                     // Determine the path to root folder
-                    var rootFolder = path.relative(filename + '/..', outputDir);
+                    var rootFolder = path.relative(filename + '/..', basename);
                     // construct tree node
                     treeNode = {
                         path: filename,
