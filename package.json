@@ -6,17 +6,20 @@
   "scripts": {
     "test": "./node_modules/.bin/mocha --reporter spec"
   },
-  "author": "Alexandros Dallas <dallas.alexandros@gmai.com>",
+  "author": "Alexandros Dallas <dallas.alexandros@gmail.com>",
+  "contributors": [
+    "Josep Mateu Clemente <jmateu.clemente@gmail.com>"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/alexandrosd/gherkindoc.git"
+    "url": "https://github.com/josepmc/gherkindoc.git"
   },
   "dependencies": {
     "del": "^2.2.2",
-    "fs-sync": "^1.0.3",
     "gherkin": "^4.0.0",
     "marked": "^0.3.6",
+    "mkdirp": "^0.5.1",
     "mustache": "^2.2.1",
     "recursive-readdir": "^2.1.0"
   },

@@ -4,6 +4,7 @@ var htmlGenerator = require('./htmlGenerator');
 var markdownParser = require('./markdownParser');
 var Gherkin = require('gherkin');
 var parser = new Gherkin.Parser();
+parser.stopOnFirstError = false;
 
 var processor = {
     scenaria: [],
@@ -15,7 +16,7 @@ var processor = {
      * @param outputDir where to output the generated html files
      */
     process: function (filename, outputDir) {
-        var tree = processor.traverseDirectory(filename, outputDir);
+        var tree = processor.traverseDirectory(filename, outputDir, path.basename(filename));
         processor.associateTags(processor.scenaria);
         tree.scenaria = processor.scenaria;
         tree.scenariaPerTag = processor.scenariaPerTag;
@@ -39,67 +40,77 @@ var processor = {
      * @param filename the directory to Traverse
      * @return treeNode
      */
-    traverseDirectory: function (filename, outputDir) {
+    traverseDirectory: function (filename, outputDir, basename) {
         var stats = fs.lstatSync(filename);
         var treeNode = null;
 
         if (stats.isDirectory()) {
             var children = fs.readdirSync(filename).map(function (child) {
-                return processor.traverseDirectory(filename + '/' + child, outputDir);
+                return processor.traverseDirectory(filename + '/' + child, outputDir, basename);
             });
             var treeNode = {
                 path: filename,
                 tocName: filename.replace(outputDir + '/', ''),
                 name: path.basename(filename),
                 link: null,
+                writePath: filename.replace(basename, outputDir),
                 type: 'directory',
                 children: children,
                 document: null
             };
         }
         else {
+            var nonFeature = true;
             if (filename.endsWith('.feature')) {
                 // parse feature file
-                var gherkinDoc = processor.parseFeature(filename);
+                try {
+                    var gherkinDoc = processor.parseFeature(filename);
+                    nonFeature = false;
+                    // clean tagnames
+                    gherkinDoc.feature.tags.forEach(tag => {
+                        tag.name = tag.name.replace('@', '');
+                    });
+                    gherkinDoc.feature.children.forEach(child => {
+                        if (child.tags) {
+                            child.tags.forEach(tag => {
+                                tag.name = tag.name.replace('@', '');
+                            });
+                        }
+                    });
 
-                // clean tagnames
-                gherkinDoc.feature.tags.forEach(tag => {
-                    tag.name = tag.name.replace('@', '');
-                });
-                gherkinDoc.feature.children.forEach(child => {
-                    if (child.tags) {
-                        child.tags.forEach(tag => {
-                            tag.name = tag.name.replace('@', '');
-                        });
-                    }
-                });
-
-                // collect scenaria for further processing
-                gherkinDoc.feature.children.forEach(child => {
-                    child.featureTags = gherkinDoc.feature.tags;
-                    child.featureName = gherkinDoc.feature.name;
-                })
-                processor.scenaria = processor.scenaria.concat(gherkinDoc.feature.children);
-                // Determine the path to root folder
-                var rootFolder = path.relative(filename + '/..', outputDir);
-                // construct tree node
-                treeNode = {
-                    path: filename,
-                    rootFolder: rootFolder ? rootFolder + '/' : '',
-                    name: path.basename(filename),
-                    tocName: gherkinDoc.feature.name,
-                    link: filename.replace(outputDir, './') + '.html',
-                    children: null,
-                    type: 'featurefile',
-                    document: gherkinDoc
-                };
+                    // collect scenaria for further processing
+                    gherkinDoc.feature.children.forEach(child => {
+                        child.featureTags = gherkinDoc.feature.tags;
+                        child.featureName = gherkinDoc.feature.name;
+                    })
+                    processor.scenaria = processor.scenaria.concat(gherkinDoc.feature.children);
+                    // Determine the path to root folder
+                    var rootFolder = path.relative(filename + '/..', outputDir);
+                    // construct tree node
+                    treeNode = {
+                        path: filename,
+                        rootFolder: rootFolder ? rootFolder + '/' : '',
+                        name: path.basename(filename),
+                        tocName: gherkinDoc.feature.name,
+                        link: filename.replace(basename, '.') + '.html',
+                        writePath: filename.replace(basename, outputDir) + '.html',
+                        children: null,
+                        type: 'featurefile',
+                        document: gherkinDoc
+                    };
+                }
+                catch(e) {
+                    console.warn(e);
+                    nonFeature = true;
+                }
             }
-            else {
+            if(nonFeature) {
                 treeNode = {
                     path: filename,
                     name: path.basename(filename),
                     tocName: null,
                     link: null,
+                    writePath: filename.replace(basename, outputDir),
                     children: null,
                     type: 'file',
                     document: null
