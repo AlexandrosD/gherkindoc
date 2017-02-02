@@ -5,8 +5,8 @@ A processor that transforms Cucumber (Gherkin) feature files into static HTML do
 and links them to their github or bitbucket repository. Additionally creates two new tags: 'Implemented' and 'Not Implemented' to list the
 steps that are complete.
 
-This project is a fork from the [GherkinDoc]{@link https://github.com/AlexandrosD/gherkindoc} project, started by @alexandrosd.
-It contains additional code developed by @alexkrechik on the [VSCucumberAutoComplete]{@link https://github.com/alexkrechik/VSCucumberAutoComplete} project.
+This project is a fork from the [GherkinDoc](https://github.com/AlexandrosD/gherkindoc) project, started by @alexandrosd.
+It contains additional code developed by @alexkrechik on the [VSCucumberAutoComplete](https://github.com/alexkrechik/VSCucumberAutoComplete) project.
 
 
 Usage:
