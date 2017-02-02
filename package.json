@@ -1,12 +1,12 @@
 {
   "name": "gherkindoc",
-  "version": "0.2.0",
-  "description": "Builds static HTML documentation sites from Cucumber/ Gherking feature files.",
+  "version": "0.3.0",
+  "description": "Builds static HTML documentation from Gherkin feature files and Cucumber Steps files (any language)",
   "main": "index.js",
   "scripts": {
     "test": "./node_modules/.bin/mocha --reporter spec",
     "tsc": "tsc",
-    "build": "npm run tsc -- --target es5 stepsParser.ts --outDir dist"
+    "prepublish": "npm run tsc -- --target es5 stepsParser.ts --outDir dist"
   },
   "author": "Alexandros Dallas <dallas.alexandros@gmail.com>",
   "contributors": [
