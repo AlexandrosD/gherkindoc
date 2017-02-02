@@ -21,7 +21,15 @@
 		<div class="container">
 			{{#steps}}
 			<div class="row">
-				<div class="col-md-12"><span class="keyword">{{keyword}}</span> {{text}}</div>
+				{{#implementation.stepMatch}}
+					<div class="col-md-12 implemented"><span class="keyword">{{keyword}}</span> {{text}}</div>
+					<div class="col-md-12"><i>{{desc}}</i></div>
+					<div class="col-md-12"><a href="{{def.gitURL}}">{{def.displayPath}}:{{def.line.line}}#{{def.line.character}}</a></div>
+					<br>
+				{{/implementation.stepMatch}}
+				{{^implementation.stepMatch}}
+					<div class="col-md-12 not-implemented"><span class="keyword">{{keyword}}</span> {{text}}</div>
+				{{/implementation.stepMatch}}
 				<!-- argument -->
 				{{#argument}}
 				<div class="container">

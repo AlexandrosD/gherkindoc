@@ -4,7 +4,9 @@
   "description": "Builds static HTML documentation sites from Cucumber/ Gherking feature files.",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/.bin/mocha --reporter spec"
+    "test": "./node_modules/.bin/mocha --reporter spec",
+    "tsc": "tsc",
+    "build": "npm run tsc -- --target es5 stepsParser.ts --outDir dist"
   },
   "author": "Alexandros Dallas <dallas.alexandros@gmail.com>",
   "contributors": [
@@ -16,15 +18,24 @@
     "url": "https://github.com/josepmc/gherkindoc.git"
   },
   "dependencies": {
+    "@types/core-js": "^0.9.35",
+    "@types/glob": "^5.0.30",
+    "@types/node": "^7.0.4",
     "del": "^2.2.2",
     "gherkin": "^4.0.0",
     "marked": "^0.3.6",
     "mkdirp": "^0.5.1",
     "mustache": "^2.2.1",
-    "recursive-readdir": "^2.1.0"
+    "parse-git-config": "^1.1.1",
+    "recursive-readdir": "^2.1.0",
+    "remote-origin-url": "^0.5.2"
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "mocha": "^3.1.2"
+    "mocha": "^3.1.2",
+    "tslint": "^4.2.0",
+    "tslint-eslint-rules": "^3.2.3",
+    "ts-node": "^2.0.0",
+    "typescript": "^2.1.5"
   }
 }
