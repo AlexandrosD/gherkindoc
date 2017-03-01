@@ -152,7 +152,7 @@ function getPageObjects(text, path) {
         var poMatch = line.match(/[\s\.]([a-zA-z][^\s^\.]*)\s*[:=]/);
         if (poMatch) {
             var pos = new LineLocation(i, 0);
-            if (!res.find(function (v) { return v.text === poMatch[1]; })) {
+            if (!res.filter(function (v) { return v.text === poMatch[1]; }).length) {
                 res.push({
                     id: 'pageObect' + id.get(),
                     text: poMatch[1],

@@ -9,8 +9,8 @@ const url = require('remote-origin-url');
 const git = require('parse-git-config');
 
 class LineLocation {
-    public line : Number;
-    public character : Number;
+    public line: Number;
+    public character: Number;
     constructor(line: Number, pos: Number) {
         this.line = line;
         this.character = pos;
@@ -18,10 +18,10 @@ class LineLocation {
 }
 
 class Location {
-    public line : LineLocation;
-    public displayPath : string;
-    public gitURL : string;
-    private _filePath : string;
+    public line: LineLocation;
+    public displayPath: string;
+    public gitURL: string;
+    private _filePath: string;
     set file(file: string) {
         this._filePath = path.resolve(path.dirname(file), path.basename(file));
         // Get git URL and relative path
@@ -54,7 +54,7 @@ class Location {
 
 let workspaceRoot: string;
 //Array will be populated with all the steps found
-let steps : Array<Step> = [];
+let steps: Array<Step> = [];
 // Object will be populated with all the pages found
 let pages = {};
 //Gerkin Reg ex
@@ -74,7 +74,7 @@ export class CodeParser {
     /**
      * @param {Array<String>} stepsDir The directories from which to draw the steps
      */
-    constructor(stepsDir : Array<String>) {
+    constructor(stepsDir: Array<String>) {
         settings.cucumberautocomplete.steps = settings.cucumberautocomplete.steps.concat(stepsDir);
         populateStepsAndPageObjects();
     }
@@ -84,7 +84,7 @@ export class CodeParser {
      * @param {string} line The Gherkin expression to parse
      * @returns {StepLine} The line that matches the gherkin expression, if found
      */
-    public ParseLine(line : string) : StepLine {
+    public ParseLine(line: string): StepLine {
         return handleLine(line);
     }
 }
@@ -192,7 +192,7 @@ function getPageObjects(text: string, path: string): PageObject[] {
         let poMatch = line.match(/[\s\.]([a-zA-z][^\s^\.]*)\s*[:=]/);
         if (poMatch) {
             let pos = new LineLocation(i, 0);
-            if (!res.find(v => {return v.text === poMatch[1]; })) {
+            if (!res.filter(v => { return v.text === poMatch[1]; }).length) {
                 res.push({
                     id: 'pageObect' + id.get(),
                     text: poMatch[1],
