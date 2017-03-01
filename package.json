@@ -18,7 +18,6 @@
     "url": "https://github.com/josepmc/gherkindoc.git"
   },
   "dependencies": {
-    "@types/es6-promise": "0.0.32",
     "@types/glob": "^5.0.30",
     "@types/node": "^7.0.4",
     "del": "^2.2.2",
