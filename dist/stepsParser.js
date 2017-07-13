@@ -1,7 +1,8 @@
+"use strict";
 /**
  * This file is based on the code done by @alexkrechik: https://github.com/alexkrechik/VSCucumberAutoComplete
  */
-"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var fs = require("fs");
 var glob = require("glob");
 var path = require("path");
@@ -26,17 +27,17 @@ var Location = (function () {
         set: function (file) {
             this._filePath = path.resolve(path.dirname(file), path.basename(file));
             // Get git URL and relative path
-            var gitMasterUrl = url.sync(this._filePath).replace(/\/$/, '');
+            var gitMasterUrl = url.sync().replace(/\/$/, '');
             // git.resolve will return the configuration file --> '.git/config'
             var prefix = path.resolve(git.resolve(this._filePath), '..', '..');
             this.displayPath = this._filePath.replace(prefix, '').replace(/\\/g, '/').replace(/^\//, '');
             var gitExtraPath = '/';
             var suffix = '';
-            if (gitMasterUrl.match(/http[s]?:\/\/[^\/]*bitbucket\.org/)) {
+            if (gitMasterUrl.match(/http[s]?:\/\/[^\/]*bitbucket\.(?:org|com)/)) {
                 gitExtraPath = '/src/master/';
                 suffix = "#" + path.basename(file) + "-" + this.line.line;
             }
-            else if (gitMasterUrl.contains(/http[s]?:\/\/[^\/]*github\.com/)) {
+            else if (gitMasterUrl.indexOf(/http[s]?:\/\/[^\/]*github\.com/) !== -1) {
                 // here we should parse the correct branch
                 gitExtraPath = '/blob/master/';
             }

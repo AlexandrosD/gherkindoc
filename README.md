@@ -27,3 +27,6 @@ The following options are available (defaults are shown):
 ```
 
 If the parameter steps is not given, then all the steps and features will be marked as not implemented.
+
+Original Author: Alexandros Dallas <dallas.alexandros@gmail.com>
+Fork Author: Josep Mateu Clemente <jmateu.clemente@gmail.com>

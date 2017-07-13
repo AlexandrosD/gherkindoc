@@ -25,20 +25,22 @@ class Location {
     set file(file: string) {
         this._filePath = path.resolve(path.dirname(file), path.basename(file));
         // Get git URL and relative path
-        let gitMasterUrl = url.sync(this._filePath).replace(/\/$/, '');
+        var gitMasterUrl = url.sync().replace(/\/$/, '');
         // git.resolve will return the configuration file --> '.git/config'
-        let prefix = path.resolve(git.resolve(this._filePath), '..', '..');
+        var prefix = path.resolve(git.resolve(this._filePath), '..', '..');
         this.displayPath = this._filePath.replace(prefix, '').replace(/\\/g, '/').replace(/^\//, '');
-        let gitExtraPath = '/';
-        let suffix = '';
-        if (gitMasterUrl.match(/http[s]?:\/\/[^\/]*bitbucket\.org/)) {
+        var gitExtraPath = '/';
+        var suffix = '';
+        if (gitMasterUrl.match(/http[s]?:\/\/[^\/]*bitbucket\.(?:org|com)/)) {
             gitExtraPath = '/src/master/';
-            suffix = `#${path.basename(file)}-${this.line.line}`;
-        } else if (gitMasterUrl.contains(/http[s]?:\/\/[^\/]*github\.com/)) {
+            suffix = "#" + path.basename(file) + "-" + this.line.line;
+        }
+        else if (gitMasterUrl.indexOf(/http[s]?:\/\/[^\/]*github\.com/) !== -1) {
             // here we should parse the correct branch
             gitExtraPath = '/blob/master/';
-        } else {
-            console.log(`Unknown git provider: ${gitMasterUrl}`);
+        }
+        else {
+            console.log("Unknown git provider: " + gitMasterUrl);
         }
         this.gitURL = gitMasterUrl + gitExtraPath + this.displayPath + suffix;
     }
