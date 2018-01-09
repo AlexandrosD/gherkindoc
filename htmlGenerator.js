@@ -1,6 +1,8 @@
 var Mustache = require('mustache');
 var marked = require('marked');
 var fs = require('fs');
+var mkdir = require('mkdirp');
+var path = require('path');
 
 var defaultOptions = {
     theme: 'cosmo',
@@ -39,7 +41,7 @@ var htmlGenerator = {
         if (fs.existsSync(outputDir + '/tags')) {
             del.sync(outputDir + '/tags');
         }
-        fs.mkdirSync(outputDir + '/tags');
+        mkdir.sync(outputDir + '/tags');
         tree.tags.forEach(tag => {
             htmlGenerator.generateTagHtml(tree, tag.name, outputDir);
         });
@@ -54,7 +56,8 @@ var htmlGenerator = {
     generateFeaturePages: function (treeNode) {
         if (treeNode.type == 'featurefile') {
             var output = Mustache.render(htmlGenerator.htmlTemplates.feature, { document: treeNode.document, rootFolder: treeNode.rootFolder, options: htmlGenerator.options }, htmlGenerator.htmlTemplates);
-            fs.writeFileSync(treeNode.path + '.html', output);
+            mkdir.sync(path.dirname(treeNode.writePath));
+            fs.writeFileSync(treeNode.writePath, output);
         }
         if (treeNode.type == 'directory') {
             treeNode.children.forEach(childNode => {
@@ -72,6 +75,7 @@ var htmlGenerator = {
     generateTocHtml: function (tree, outputDir) {
         tree.options = htmlGenerator.options;
         var output = Mustache.render(htmlGenerator.htmlTemplates.toc, tree, htmlGenerator.htmlTemplates);
+        mkdir.sync(path.dirname(outputDir));
         fs.writeFileSync(outputDir + '/toc.html', output);
     },
 
@@ -83,6 +87,7 @@ var htmlGenerator = {
     generateIndex: function (tree, outputDir) {
         tree.options = htmlGenerator.options;
         var output = Mustache.render(htmlGenerator.htmlTemplates.index, tree, htmlGenerator.htmlTemplates);
+        mkdir.sync(path.dirname(outputDir));
         fs.writeFileSync(outputDir + '/index.html', output);
         output = Mustache.render(htmlGenerator.htmlTemplates.main, tree, htmlGenerator.htmlTemplates);
         fs.writeFileSync(outputDir + '/main.html', output);
